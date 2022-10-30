@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import Papa from "papaparse"
-import {LatLng} from "leaflet"
+import { LatLng } from "leaflet"
 
 export type Information = {
   latLng: LatLng,
@@ -22,7 +22,7 @@ const useHeatmapData = () => {
     fetch("/assets/data.csv")
       .then(res => res.text())
       .then(text => {
-        const results = Papa.parse(text ,{
+        const results = Papa.parse(text, {
           header: false,
         })
         const infos = results.data.map<Information>((d) => {
@@ -34,23 +34,23 @@ const useHeatmapData = () => {
             date,
           }
         })
-        setInformations(infos) 
+        setInformations(infos)
       })
   }
 
   const loadSpreadSheet = () => {
-    const url = "https://script.google.com/macros/s/AKfycbxxulXc2WYyEGODo9Kh6xSG_xDJDSipOL2YbsDp_6wPfq5BxBqadzLmYTxCnS_xkyW4jA/exec"
+    const url = "https://script.google.com/macros/s/AKfycbz6FQawP8RG6ge_I5iY95Drw8FpU4B103ejacugh0t9GSVj-s-39Cva5qbCDIg3nFX-/exec"
     fetch(url).then((res) => res.json())
-    .then(value => {
-      const data = value as {lat: number, lng: number, date: string}[]
-      const infos = data.map<Information>(v => {
-        return {
-          latLng: new LatLng(v.lat, v.lng),
-          date: new Date(v.date)
-        }
+      .then(value => {
+        const data = value as { lat: number, lng: number, date: string }[]
+        const infos = data.map<Information>(v => {
+          return {
+            latLng: new LatLng(v.lat, v.lng),
+            date: new Date(v.date)
+          }
+        })
+        setInformations(infos)
       })
-      setInformations(infos)
-    })
   }
 
 
@@ -60,4 +60,4 @@ const useHeatmapData = () => {
   }
 }
 
-export default  useHeatmapData
+export default useHeatmapData
